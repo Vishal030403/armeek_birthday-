@@ -1,0 +1,8 @@
+{
+  "name": "Armeek 's Birthday Celebration",
+  "description": "An interactive, heartfelt birthday celebration app for Armeek  with playful questions, a memory scrapbook, and a keepsake letter.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

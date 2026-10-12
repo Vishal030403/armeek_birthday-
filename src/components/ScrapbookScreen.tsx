@@ -6,10 +6,27 @@ import { confettiEmitter } from './ConfettiCanvas';
 // Drop any .jpg / .jpeg / .png / .webp / .gif into src/photos/ and it will
 // automatically appear as a polaroid card here. No code changes needed!
 const photoModules = import.meta.glob(
-  '../photos/*.{jpg,jpeg,png,webp,gif,JPG,JPEG,PNG,WEBP,GIF}',
-  { eager: true, as: 'url' }
+  [
+    '../photos/*.{jpg,jpeg,png,webp,gif,JPG,JPEG,PNG,WEBP,GIF}',
+    './photos/*.{jpg,jpeg,png,webp,gif,JPG,JPEG,PNG,WEBP,GIF}',
+  ],
+  { eager: true }
 );
-const PHOTO_URLS: string[] = Object.values(photoModules) as string[];
+
+const getPhotoUrl = (mod: any): string => {
+  if (typeof mod === 'string') return mod;
+  if (typeof mod?.default === 'string') return mod.default;
+  if (typeof mod?.default === 'function') return mod.default();
+  return '';
+};
+
+const PHOTO_URLS: string[] = Array.from(
+  new Set(
+    Object.values(photoModules)
+      .map(getPhotoUrl)
+      .filter((url): url is string => Boolean(url))
+  )
+);
 
 // ─── Polaroid styling helpers ─────────────────────────────────────────────────
 const ROTATIONS = ['-rotate-2', 'rotate-2', '-rotate-1', 'rotate-1', '-rotate-3', 'rotate-3'];
